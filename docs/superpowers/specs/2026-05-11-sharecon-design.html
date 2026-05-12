@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sharecon: Shared Consciousness Knowledge System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --db-red: #FF3621;
+    --db-dark: #1B3139;
+    --db-cream: #F9F7F4;
+    --db-text: #0B2026;
+    --db-gray-100: #F5F3F0;
+    --db-gray-200: #E8E5E0;
+    --db-gray-400: #8F8B85;
+    --db-gray-600: #5C5955;
+  }
+  body {
+    font-family: "DM Sans", Arial, sans-serif;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 28px;
+    line-height: 1.75;
+    color: var(--db-text);
+    background: var(--db-cream);
+  }
+  h1 {
+    font-size: 2.1em;
+    font-weight: 700;
+    color: var(--db-dark);
+    border-bottom: 4px solid var(--db-red);
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+    letter-spacing: -0.5px;
+  }
+  h2 {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-top: 44px;
+    color: var(--db-dark);
+    border-bottom: 2px solid var(--db-gray-200);
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-size: 1.15em;
+    font-weight: 500;
+    margin-top: 28px;
+    color: var(--db-dark);
+  }
+  p { margin: 12px 0; }
+  a { color: var(--db-red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 18px 0;
+    font-size: 0.95em;
+  }
+  th, td {
+    border: 1px solid var(--db-gray-200);
+    padding: 10px 14px;
+    text-align: left;
+  }
+  th {
+    background: var(--db-dark);
+    color: white;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  tr:nth-child(even) { background: var(--db-gray-100); }
+  code {
+    background: #EDE9E3;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  }
+  pre {
+    background: var(--db-dark);
+    color: #E8E8E8;
+    padding: 22px;
+    border-radius: 10px;
+    overflow-x: auto;
+    line-height: 1.55;
+    border-left: 4px solid var(--db-red);
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: 0.9em;
+  }
+  ul, ol { padding-left: 24px; }
+  li { margin-bottom: 6px; }
+  strong { color: var(--db-dark); }
+  blockquote {
+    border-left: 4px solid var(--db-red);
+    margin: 16px 0;
+    padding: 12px 20px;
+    background: var(--db-gray-100);
+    color: var(--db-gray-600);
+  }
+  .header-bar {
+    background: var(--db-dark);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 12px;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-bar .logo {
+    width: 36px;
+    height: 36px;
+    background: var(--db-red);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .header-bar .meta {
+    font-size: 0.9em;
+    opacity: 0.8;
+  }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 2px solid var(--db-gray-200);
+    font-size: 0.85em;
+    color: var(--db-gray-400);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer .db-badge {
+    background: var(--db-dark);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <div class="logo">D</div>
+  <div>
+    <div style="font-size: 1.3em; font-weight: 700;">Sharecon</div>
+    <div class="meta">Shared Consciousness Knowledge System &mdash; Consumer Industries</div>
+  </div>
+</div>
+
+<h1>Sharecon: Shared Consciousness Knowledge System</h1>
+<h2>Overview</h2>
+<p>Sharecon is a Claude Code plugin that gives anyone in the organization instant access to the Consumer Industries team's collective knowledge. Contributors drop files into a structured Google Drive folder. Claude Code skills read a lightweight table of contents (<code>_TOC.json</code>) to find relevant documents, fetch them on demand, and answer questions with citations and expert attribution.</p>
+<h2>Problem</h2>
+<p>The CI team's effectiveness comes from deep tribal knowledge: account strategies, talk tracks, outcome maps, playbooks, and best practices. This knowledge lives in people's heads, scattered docs, and a 7-year-old Signal chat. AI tools boost individual task productivity, but the organizational knowledge doesn't compound because it isn't captured or accessible at scale.</p>
+<h2>Design Principles</h2>
+<ul>
+<li><strong>Zero friction for contributors</strong> - drop files in Drive, that's it</li>
+<li><strong>Zero infrastructure</strong> - no external scripts, databases, or pipelines. Just Claude Code + Google Drive auth</li>
+<li><strong>TOC as the abstraction layer</strong> - skills don't care where files live, only where <code>_TOC.json</code> is</li>
+<li><strong>Delta-only sync</strong> - only process new or modified files</li>
+<li><strong>Claude is the summarizer</strong> - no external AI services needed; Claude generates summaries during refresh</li>
+<li><strong>Expert attribution from authorship</strong> - Drive file ownership is the signal</li>
+</ul>
+<h2>Architecture</h2>
+<h3>Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/ci-refresh</code></td>
+<td>Scan Drive, delta-sync <code>_TOC.json</code> - Claude reads new/changed docs and generates summaries</td>
+</tr>
+<tr>
+<td><code>/ci-ask</code></td>
+<td>Query knowledge base, get answers with citations + expert attribution</td>
+</tr>
+<tr>
+<td><code>/ci-browse</code></td>
+<td>Browse knowledge base by folder, topic, or contributor</td>
+</tr>
+<tr>
+<td><code>/ci-expert</code></td>
+<td>"Who knows the most about X?" ranked by doc authorship</td>
+</tr>
+</tbody>
+</table>
+<h3>Data Flow</h3>
+<div class="codehilite"><pre><span></span><code>Contributors                    System                         Consumers
+───────────                    ──────                         ─────────
+Drop files in        →    /ci-refresh scans Drive        →    /ci-ask reads _TOC.json
+Google Drive              diffs against _TOC.json             identifies relevant docs
+                          Claude reads new docs               fetches from Drive
+                          (first 10K chars)                   synthesizes answer
+                          generates summaries + tags          cites sources + experts
+                          writes _TOC.json to Drive
+</code></pre></div>
+
+<h3>Dependencies</h3>
+<ul>
+<li>Google Drive auth (existing <code>fe-google-tools</code> plugin)</li>
+<li>That's it.</li>
+</ul>
+<h2>TOC Structure</h2>
+<p><code>_TOC.json</code> lives in the root of the Google Drive knowledge base folder:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;last_synced&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-05-11T18:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;synced_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sathish.gangichetty@databricks.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google_drive&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;folder_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GOOGLE_DRIVE_FOLDER_ID&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;drive_file_id_123&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Retail Lakehouse Pitch Strategy.docx&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Talk Tracks/Retail Lakehouse Pitch Strategy.docx&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;folder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Talk Tracks&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;author&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lorraine.bacon@databricks.com&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;last_modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-05-10T14:22:00Z&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mime_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/vnd.google-apps.document&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;summary&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Framework for positioning lakehouse architecture to retail CIOs. Covers data mesh concerns, real-time inventory use case, and cost comparison vs. legacy warehouse.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;retail&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lakehouse&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;CIO&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;inventory&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;data mesh&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;summary_generated&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-05-11T18:30:00Z&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2>Staleness Check</h2>
+<p>Every skill (<code>/ci-ask</code>, <code>/ci-browse</code>, <code>/ci-expert</code>) reads <code>_TOC.json</code> before executing. If <code>last_synced</code> is older than 24 hours, the skill informs the user before proceeding:</p>
+<div class="codehilite"><pre><span></span><code>Knowledge base was last synced 2 days ago.
+Run /ci-refresh to pick up any new or changed documents.
+</code></pre></div>
+
+<p>The skill still answers the query using the existing TOC - it doesn't block. The nudge ensures someone refreshes periodically without forcing it.</p>
+<h2>/ci-refresh</h2>
+<p>Syncs the TOC with the current state of the Google Drive folder. Claude does all the work - no external scripts or services.</p>
+<h3>Sync Logic</h3>
+<ol>
+<li>Read existing <code>_TOC.json</code> from Drive</li>
+<li>List <strong>all</strong> files recursively in the Drive folder (metadata only - fast). This is the source of truth.</li>
+<li>Build a full file manifest from Drive: every file ID, name, path, author, last_modified</li>
+<li>Cross-reference the Drive manifest against the TOC to produce four buckets:</li>
+<li><strong>Unchanged</strong> - file exists in both, <code>last_modified</code> matches → skip entirely</li>
+<li><strong>New</strong> - file exists in Drive but not in TOC → read first 10,000 characters, Claude generates a 2-3 line summary and 3-7 tags</li>
+<li><strong>Modified</strong> - file exists in both but Drive's <code>last_modified</code> is newer → re-read and regenerate summary</li>
+<li><strong>Deleted</strong> - file exists in TOC but <strong>not</strong> in the Drive manifest → remove from TOC</li>
+<li>For deletions: verify each TOC entry's file ID against the Drive manifest. Any TOC entry whose <code>id</code> is absent from Drive gets removed. This catches renamed files, moved files, and entire folder deletions.</li>
+<li>Write updated <code>_TOC.json</code> back to Drive</li>
+<li>Report to user:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>Knowledge base synced:
+  3 new files indexed
+  1 file updated
+  0 files removed
+  47 total documents
+
+New additions:
+  - Talk Tracks/Retail Lakehouse Pitch Strategy.docx (Lorraine Bacon)
+  - Playbooks/CPG Data Mesh Playbook.docx (Rob Saker)
+  - Meeting Notes/QBR May 2026.docx (Justin Fenton)
+</code></pre></div>
+
+<h3>Mass Deletion Protection</h3>
+<p>If a single refresh would remove more than 50% of TOC entries, the skill warns before proceeding:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Warning</span><span class="o">:</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="mi">47</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="n">appear</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">removed</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">Drive</span>
+<span class="n">since</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="n">sync</span><span class="o">.</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">indicate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">folder</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="n">change</span>
+<span class="n">or</span><span class="w"> </span><span class="n">accidental</span><span class="w"> </span><span class="n">deletion</span><span class="o">.</span>
+
+<span class="n">Proceed</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">sync</span><span class="o">?</span><span class="w"> </span><span class="o">(</span><span class="n">yes</span><span class="o">/</span><span class="n">no</span><span class="o">)</span>
+</code></pre></div>
+
+<h3>Supported File Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>How It's Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Docs</td>
+<td>Exported as plain text via Drive API</td>
+</tr>
+<tr>
+<td>PDFs</td>
+<td>Exported as text via Drive API</td>
+</tr>
+<tr>
+<td>DOCX</td>
+<td>Exported as text via Drive API</td>
+</tr>
+<tr>
+<td>Plain text</td>
+<td>Read directly</td>
+</tr>
+<tr>
+<td>Markdown (.md)</td>
+<td>Read directly</td>
+</tr>
+<tr>
+<td>HTML (.html)</td>
+<td>Read directly</td>
+</tr>
+<tr>
+<td>Google Sheets</td>
+<td>Exported as text (first sheet) via Drive API</td>
+</tr>
+<tr>
+<td>Binary (images, videos)</td>
+<td>Listed in TOC with filename only, no summary</td>
+</tr>
+</tbody>
+</table>
+<h2>Claude Code Skills</h2>
+<p>All skills read <code>_TOC.json</code> from Drive and fetch documents on demand. Each skill checks TOC staleness and nudges the user if needed.</p>
+<h3>/ci-ask</h3>
+<p>Query the knowledge base with natural language.</p>
+<p><strong>Flow:</strong>
+1. Read <code>_TOC.json</code> from Drive (check staleness, nudge if &gt;24h)
+2. Claude matches the user's question against TOC summaries + tags
+3. Identifies the top 3-5 most relevant documents
+4. Fetches those documents from Drive (first 10K characters each)
+5. Synthesizes an answer citing specific documents
+6. Surfaces the top contributor(s) on the topic</p>
+<p><strong>Example:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="nv">ci</span><span class="o">-</span><span class="nv">ask</span><span class="w"> </span><span class="s2">&quot;how do we talk to retailers about lakehouse?&quot;</span>
+
+<span class="nv">Based</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">CI</span><span class="w"> </span><span class="nv">knowledge</span><span class="w"> </span><span class="nv">base</span>:
+
+[<span class="nv">Synthesized</span><span class="w"> </span><span class="nv">answer</span><span class="w"> </span><span class="nv">drawing</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">multiple</span><span class="w"> </span><span class="nv">docs</span>...]
+
+<span class="nv">Sources</span>:
+<span class="o">-</span><span class="w"> </span><span class="nv">Talk</span><span class="w"> </span><span class="nv">Tracks</span><span class="o">/</span><span class="nv">Retail</span><span class="w"> </span><span class="nv">Lakehouse</span><span class="w"> </span><span class="nv">Pitch</span><span class="w"> </span><span class="nv">Strategy</span>.<span class="nv">docx</span><span class="w"> </span><span class="ss">(</span><span class="nv">Lorraine</span><span class="w"> </span><span class="nv">Bacon</span><span class="ss">)</span>
+<span class="o">-</span><span class="w"> </span><span class="nv">Playbooks</span><span class="o">/</span><span class="nv">Retail</span><span class="w"> </span><span class="nv">Data</span><span class="w"> </span><span class="nv">Platform</span><span class="w"> </span><span class="nv">Playbook</span>.<span class="nv">docx</span><span class="w"> </span><span class="ss">(</span><span class="nv">Rob</span><span class="w"> </span><span class="nv">Saker</span><span class="ss">)</span>
+<span class="o">-</span><span class="w"> </span><span class="nv">Outcome</span><span class="w"> </span><span class="nv">Maps</span><span class="o">/</span><span class="nv">Retail</span><span class="w"> </span><span class="nv">Inventory</span><span class="w"> </span><span class="nv">Real</span><span class="o">-</span><span class="nv">Time</span>.<span class="nv">docx</span><span class="w"> </span><span class="ss">(</span><span class="nv">Justin</span><span class="w"> </span><span class="nv">Fenton</span><span class="ss">)</span>
+
+<span class="nv">People</span><span class="w"> </span><span class="nv">closest</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">topic</span>:
+<span class="o">-</span><span class="w"> </span><span class="nv">Lorraine</span><span class="w"> </span><span class="nv">Bacon</span><span class="w"> </span><span class="ss">(</span><span class="mi">3</span><span class="w"> </span><span class="nv">docs</span><span class="ss">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">may</span><span class="w"> </span><span class="nv">have</span><span class="w"> </span><span class="nv">additional</span><span class="w"> </span><span class="nv">context</span>
+<span class="o">-</span><span class="w"> </span><span class="nv">Rob</span><span class="w"> </span><span class="nv">Saker</span><span class="w"> </span><span class="ss">(</span><span class="mi">1</span><span class="w"> </span><span class="nv">doc</span><span class="ss">)</span>
+</code></pre></div>
+
+<h3>/ci-browse</h3>
+<p>Browse the knowledge base contents.</p>
+<p><strong>Modes:</strong>
+- No arguments: list all folders with file counts
+- By folder: <code>/ci-browse "Talk Tracks"</code> - list files in that folder
+- By contributor: <code>/ci-browse --author "lorraine.bacon"</code> - list all docs by that person
+- By tag: <code>/ci-browse --tag "retail"</code> - list all docs with that tag</p>
+<h3>/ci-expert</h3>
+<p>Find who knows the most about a topic.</p>
+<p><strong>Flow:</strong>
+1. Read <code>_TOC.json</code> (check staleness)
+2. Match query against summaries + tags
+3. Group relevant docs by author
+4. Rank by count of relevant docs</p>
+<p><strong>Example:</strong></p>
+<div class="codehilite"><pre><span></span><code>&gt; /ci-expert &quot;real-time inventory analytics&quot;
+
+Based on the knowledge base, the people closest to this topic are:
+
+1. Lorraine Bacon (3 docs) — Retail Lakehouse Pitch Strategy,
+   CPG Data Mesh Playbook, Retail Inventory Outcome Map
+2. Rob Saker (2 docs) — Consumer Industries AI Strategy,
+   Retail CIO Messaging Framework
+3. Justin Fenton (1 doc) — Quick-Service Restaurant Analytics Playbook
+</code></pre></div>
+
+<h2>Google Drive Folder Structure</h2>
+<p>Seeded with a recommended hierarchy, but contributors can add new folders at any time. <code>/ci-refresh</code> discovers new folders automatically.</p>
+<div class="codehilite"><pre><span></span><code>CI Knowledge Base/
+├── _TOC.json
+├── Account Strategies/
+├── Playbooks/
+├── Outcome Maps/
+├── Talk Tracks/
+├── Meeting Notes/
+└── Best Practices/
+</code></pre></div>
+
+<h2>Plugin Configuration</h2>
+<p>The plugin needs one piece of information: the Google Drive root folder ID. Configured in the plugin's settings.</p>
+<p>The <code>source</code> field in <code>_TOC.json</code> tells the skills how to fetch documents:
+- <code>"type": "google_drive"</code> - use Google Drive API with existing <code>fe-google-tools</code> auth
+- <code>"type": "local"</code> - read from local filesystem (future option)</p>
+<h2>Edge Cases</h2>
+<ul>
+<li><strong>File without Drive owner metadata</strong>: use "unknown" as author, skip from expert attribution</li>
+<li><strong>File too large to read</strong>: truncate to first 10,000 characters for summary generation, note truncation in TOC entry</li>
+<li><strong>Binary files</strong>: listed in TOC with filename/path/author but no summary or tags</li>
+<li><strong>Permission errors</strong>: skip file, log warning, continue sync</li>
+<li><strong>Empty folders</strong>: included in browse results but with zero file count</li>
+<li><strong>Duplicate filenames across folders</strong>: distinguished by full path in TOC</li>
+<li><strong>TOC doesn't exist yet</strong>: <code>/ci-refresh</code> creates it from scratch on first run</li>
+</ul>
+
+<div class="footer">
+  <span>Sharecon Design Spec &mdash; May 11, 2026 &mdash; Consumer Industries Team</span>
+  <span class="db-badge">Databricks</span>
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Sharecon is a Claude Code plugin that gives anyone in the organization instant access to the Consumer Industries team's collective knowledge. Contributors drop files into a structured Google Drive folder. A standalone Python script (`sync_toc.py`) generates a lightweight table of contents (`_TOC.json`) with AI-generated summaries. Claude Code skills read the TOC and fetch relevant documents on demand to answer questions, surface experts, and browse the knowledge base.
+Sharecon is a Claude Code plugin that gives anyone in the organization instant access to the Consumer Industries team's collective knowledge. Contributors drop files into a structured Google Drive folder. Claude Code skills read a lightweight table of contents (`_TOC.json`) to find relevant documents, fetch them on demand, and answer questions with citations and expert attribution.
 
 ## Problem
 
@@ -11,44 +11,44 @@ The CI team's effectiveness comes from deep tribal knowledge: account strategies
 ## Design Principles
 
 - **Zero friction for contributors** - drop files in Drive, that's it
-- **Zero infrastructure for consumers** - Claude Code plugin, read-only skills
+- **Zero infrastructure** - no external scripts, databases, or pipelines. Just Claude Code + Google Drive auth
 - **TOC as the abstraction layer** - skills don't care where files live, only where `_TOC.json` is
 - **Delta-only sync** - only process new or modified files
+- **Claude is the summarizer** - no external AI services needed; Claude generates summaries during refresh
 - **Expert attribution from authorship** - Drive file ownership is the signal
 
 ## Architecture
 
 ### Components
 
-| Component | Runs Where | Purpose |
-|---|---|---|
-| `sync_toc.py` | Standalone (cron, Databricks Jobs, manual) | Scans source, delta-syncs `_TOC.json` with AI-generated summaries |
-| `/ci-ask` | Claude Code | Query knowledge base, get answers with citations + expert attribution |
-| `/ci-browse` | Claude Code | Browse knowledge base by folder, topic, or contributor |
-| `/ci-expert` | Claude Code | "Who knows the most about X?" ranked by doc authorship |
+| Component | Purpose |
+|---|---|
+| `/ci-refresh` | Scan Drive, delta-sync `_TOC.json` - Claude reads new/changed docs and generates summaries |
+| `/ci-ask` | Query knowledge base, get answers with citations + expert attribution |
+| `/ci-browse` | Browse knowledge base by folder, topic, or contributor |
+| `/ci-expert` | "Who knows the most about X?" ranked by doc authorship |
 
 ### Data Flow
 
 ```
 Contributors                    System                         Consumers
 ───────────                    ──────                         ─────────
-Drop files in        →    sync_toc.py reads source      →    /ci-ask reads _TOC.json
-Google Drive              diffs against _TOC.json            identifies relevant docs
-(or local folder)         OpenAI client → Databricks         fetches from source
-                          for new summaries                  synthesizes answer
-                          writes _TOC.json                   cites sources + experts
+Drop files in        →    /ci-refresh scans Drive        →    /ci-ask reads _TOC.json
+Google Drive              diffs against _TOC.json             identifies relevant docs
+                          Claude reads new docs               fetches from Drive
+                          (first 10K chars)                   synthesizes answer
+                          generates summaries + tags          cites sources + experts
+                          writes _TOC.json to Drive
 ```
 
 ### Dependencies
 
 - Google Drive auth (existing `fe-google-tools` plugin)
-- `openai` Python package (pointed at Databricks Foundation Model serving endpoint)
-- Databricks API token (for `sync_toc.py` only)
-- `uv` for running the Python script
+- That's it.
 
 ## TOC Structure
 
-`_TOC.json` lives alongside the knowledge files (in Drive root or local folder root):
+`_TOC.json` lives in the root of the Google Drive knowledge base folder:
 
 ```json
 {
@@ -75,77 +75,86 @@ Google Drive              diffs against _TOC.json            identifies relevant
 }
 ```
 
-## sync_toc.py
+## Staleness Check
 
-Standalone Python script. Can be scheduled externally (cron, Databricks Jobs) or run manually. Does not need to run inside Claude Code.
+Every skill (`/ci-ask`, `/ci-browse`, `/ci-expert`) reads `_TOC.json` before executing. If `last_synced` is older than 24 hours, the skill informs the user before proceeding:
+
+```
+Knowledge base was last synced 2 days ago.
+Run /ci-refresh to pick up any new or changed documents.
+```
+
+The skill still answers the query using the existing TOC - it doesn't block. The nudge ensures someone refreshes periodically without forcing it.
+
+## /ci-refresh
+
+Syncs the TOC with the current state of the Google Drive folder. Claude does all the work - no external scripts or services.
 
 ### Sync Logic
 
-1. List all files recursively in the configured source (metadata only - fast)
-2. Read existing `_TOC.json` from source
-3. Compare each file's `last_modified` against TOC entries
-4. Three buckets:
-   - **Unchanged** - skip entirely
-   - **New/Modified** - read content, call Databricks Foundation Model via OpenAI client for summary + tags
-   - **Deleted** (in TOC but not in source) - remove from TOC
-5. Write updated `_TOC.json` back to source
-6. Report: "Synced 3 new files, updated 1, removed 0, 47 total in knowledge base."
+1. Read existing `_TOC.json` from Drive
+2. List **all** files recursively in the Drive folder (metadata only - fast). This is the source of truth.
+3. Build a full file manifest from Drive: every file ID, name, path, author, last_modified
+4. Cross-reference the Drive manifest against the TOC to produce four buckets:
+   - **Unchanged** - file exists in both, `last_modified` matches → skip entirely
+   - **New** - file exists in Drive but not in TOC → read first 10,000 characters, Claude generates a 2-3 line summary and 3-7 tags
+   - **Modified** - file exists in both but Drive's `last_modified` is newer → re-read and regenerate summary
+   - **Deleted** - file exists in TOC but **not** in the Drive manifest → remove from TOC
+5. For deletions: verify each TOC entry's file ID against the Drive manifest. Any TOC entry whose `id` is absent from Drive gets removed. This catches renamed files, moved files, and entire folder deletions.
+6. Write updated `_TOC.json` back to Drive
+6. Report to user:
+
+```
+Knowledge base synced:
+  3 new files indexed
+  1 file updated
+  0 files removed
+  47 total documents
+
+New additions:
+  - Talk Tracks/Retail Lakehouse Pitch Strategy.docx (Lorraine Bacon)
+  - Playbooks/CPG Data Mesh Playbook.docx (Rob Saker)
+  - Meeting Notes/QBR May 2026.docx (Justin Fenton)
+```
 
 ### Mass Deletion Protection
 
-If a single sync would remove more than 50% of TOC entries, the script pauses and warns:
+If a single refresh would remove more than 50% of TOC entries, the skill warns before proceeding:
 
 ```
-Warning: 24 of 47 files appear to have been removed since last sync.
-This may indicate a folder permission change or accidental deletion.
-Proceed? (yes/no)
-```
+Warning: 24 of 47 files appear to have been removed from Drive
+since last sync. This may indicate a folder permission change
+or accidental deletion.
 
-### Summary Generation
-
-Uses the OpenAI-compatible Databricks Foundation Model endpoint:
-
-```python
-from openai import OpenAI
-
-client = OpenAI(
-    api_key="DATABRICKS_TOKEN",
-    base_url="https://<workspace>.cloud.databricks.com/serving-endpoints"
-)
-
-response = client.chat.completions.create(
-    model="databricks-claude-sonnet-4",
-    messages=[{
-        "role": "user",
-        "content": f"Summarize this document in 2-3 lines and extract 3-7 key tags.\n\nDocument:\n{doc_content}"
-    }]
-)
+Proceed with sync? (yes/no)
 ```
 
 ### Supported File Types
 
-- Google Docs
-- PDFs
-- DOCX
-- Plain text
-- Markdown (.md)
-- HTML (.html)
-- Google Sheets (first sheet as text)
-- Binary files (images, videos) - listed in TOC with filename only, no summary generated
+| Type | How It's Read |
+|---|---|
+| Google Docs | Exported as plain text via Drive API |
+| PDFs | Exported as text via Drive API |
+| DOCX | Exported as text via Drive API |
+| Plain text | Read directly |
+| Markdown (.md) | Read directly |
+| HTML (.html) | Read directly |
+| Google Sheets | Exported as text (first sheet) via Drive API |
+| Binary (images, videos) | Listed in TOC with filename only, no summary |
 
 ## Claude Code Skills
 
-All skills are read-only. They read `_TOC.json` and fetch documents from the source on demand.
+All skills read `_TOC.json` from Drive and fetch documents on demand. Each skill checks TOC staleness and nudges the user if needed.
 
 ### /ci-ask
 
 Query the knowledge base with natural language.
 
 **Flow:**
-1. Read `_TOC.json` from source (cached locally per session)
+1. Read `_TOC.json` from Drive (check staleness, nudge if >24h)
 2. Claude matches the user's question against TOC summaries + tags
 3. Identifies the top 3-5 most relevant documents
-4. Fetches those documents from source
+4. Fetches those documents from Drive (first 10K characters each)
 5. Synthesizes an answer citing specific documents
 6. Surfaces the top contributor(s) on the topic
 
@@ -182,7 +191,7 @@ Browse the knowledge base contents.
 Find who knows the most about a topic.
 
 **Flow:**
-1. Read `_TOC.json`
+1. Read `_TOC.json` (check staleness)
 2. Match query against summaries + tags
 3. Group relevant docs by author
 4. Rank by count of relevant docs
@@ -202,7 +211,7 @@ Based on the knowledge base, the people closest to this topic are:
 
 ## Google Drive Folder Structure
 
-Seeded with a recommended hierarchy, but contributors can add new folders at any time. The sync script discovers new folders automatically.
+Seeded with a recommended hierarchy, but contributors can add new folders at any time. `/ci-refresh` discovers new folders automatically.
 
 ```
 CI Knowledge Base/
@@ -217,27 +226,18 @@ CI Knowledge Base/
 
 ## Plugin Configuration
 
-The plugin needs one piece of information: where is `_TOC.json`?
+The plugin needs one piece of information: the Google Drive root folder ID. Configured in the plugin's settings.
 
-For Google Drive, this is the root folder ID. For a local folder, this is a file path. Configured in the plugin's settings and can be changed at any time.
-
-The `source` field in `_TOC.json` itself tells the skills how to fetch documents:
+The `source` field in `_TOC.json` tells the skills how to fetch documents:
 - `"type": "google_drive"` - use Google Drive API with existing `fe-google-tools` auth
-- `"type": "local"` - read from local filesystem
-
-## Source Flexibility
-
-The TOC is the abstraction layer. Skills only read `_TOC.json` and fetch content based on `source.type`. To switch from Google Drive to a local folder (or S3, or anything else):
-
-1. Update `source` in `_TOC.json`
-2. Update `sync_toc.py` to read from the new source
-3. Skills require zero changes
+- `"type": "local"` - read from local filesystem (future option)
 
 ## Edge Cases
 
 - **File without Drive owner metadata**: use "unknown" as author, skip from expert attribution
-- **File too large to summarize**: truncate to first 10,000 characters for summary generation, note truncation in TOC entry
+- **File too large to read**: truncate to first 10,000 characters for summary generation, note truncation in TOC entry
 - **Binary files**: listed in TOC with filename/path/author but no summary or tags
 - **Permission errors**: skip file, log warning, continue sync
 - **Empty folders**: included in browse results but with zero file count
 - **Duplicate filenames across folders**: distinguished by full path in TOC
+- **TOC doesn't exist yet**: `/ci-refresh` creates it from scratch on first run
