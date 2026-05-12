@@ -143,23 +143,27 @@ def list_files(folder_id: str, path_prefix: str = "") -> list:
             is_folder = f["mimeType"] == "application/vnd.google-apps.folder"
             file_path = f"{path_prefix}/{f['name']}" if path_prefix else f["name"]
 
+            # Recurse into sub-folders but don't include folder entries themselves
+            if is_folder:
+                results.extend(list_files(f["id"], path_prefix=file_path))
+                continue
+
             owners = f.get("owners", [])
             author = owners[0].get("emailAddress", "") if owners else ""
+
+            # folder field is the parent folder name (string), not a boolean
+            folder_name = path_prefix.lstrip("/") if path_prefix else ""
 
             entry = {
                 "id": f["id"],
                 "name": f["name"],
                 "path": file_path,
-                "folder": is_folder,
+                "folder": folder_name,
                 "mime_type": f["mimeType"],
                 "last_modified": f.get("modifiedTime", ""),
                 "author": author,
             }
             results.append(entry)
-
-            # Recurse into sub-folders
-            if is_folder:
-                results.extend(list_files(f["id"], path_prefix=file_path))
 
         page_token = resp.get("nextPageToken")
         if not page_token:

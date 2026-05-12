@@ -1,6 +1,6 @@
-# Sharecon — Shared Consciousness for Claude Code
+# CI Knowledge — Consumer Industries Knowledge Base for Claude Code
 
-A Claude Code plugin that surfaces your team's collective knowledge from Google Drive. Contributors drop files into a shared folder. Anyone with Claude Code can instantly query that knowledge, browse it, and find out who knows the most about a topic.
+A Claude Code plugin that surfaces the Consumer Industries team's collective knowledge from Google Drive. Contributors drop files into a shared folder. Anyone with Claude Code can instantly query that knowledge, browse it, and find out who knows the most about a topic.
 
 Built on the "Team of Teams" framework: Trust, Common Purpose, Shared Consciousness, Empowered Execution.
 
@@ -33,7 +33,7 @@ Google Drive              diffs against _TOC.json             fetches relevant d
 ### 1. Install the plugin
 
 ```bash
-claude plugin add github:datasciencemonkey/sharecon
+claude plugin add github:datasciencemonkey/ci-knowledge
 ```
 
 ### 2. Authenticate Google Drive

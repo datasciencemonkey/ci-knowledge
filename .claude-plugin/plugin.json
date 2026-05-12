@@ -1,6 +1,6 @@
 {
-  "name": "sharecon",
-  "description": "Shared Consciousness — surface team collective knowledge from Google Drive via Claude Code. Query, browse, and find experts across your team's knowledge base.",
+  "name": "ci-knowledge",
+  "description": "Consumer Industries Knowledge Base — surface the CI team's collective knowledge from Google Drive via Claude Code. Query, browse, and find experts across the team's knowledge base.",
   "version": "0.1.0",
   "author": {
     "name": "Sathish Gangichetty",
