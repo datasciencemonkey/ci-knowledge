@@ -27,15 +27,20 @@ Before installing, make sure you have:
 2. **Google Drive access** — you need access to the shared CI Knowledge Base folder in Google Drive
 3. **`fe-google-tools` plugin** — provides Google Drive authentication
 
-If you don't have `fe-google-tools`, install it first:
+If you don't have `fe-google-tools`, install it with vibe:
 ```bash
-claude plugin add fe-google-tools
+vibe plugins
 ```
+Select `fe-google-tools` from the list and install it.
 
 ## Installation
 
 ### Step 1: Install the plugin
 
+```bash
+vibe plugins
+```
+Select `ci-knowledge` from the plugin list, or install directly:
 ```bash
 claude plugin add github:datasciencemonkey/ci-knowledge
 ```
