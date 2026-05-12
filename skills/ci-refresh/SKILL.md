@@ -1,11 +1,11 @@
 ---
 name: ci-refresh
-description: Sync the Sharecon knowledge base TOC with Google Drive. Scans for new, modified, and deleted files, generates summaries for changes, and writes updated _TOC.json back to Drive.
+description: Sync the CI Knowledge Base TOC with Google Drive. Scans for new, modified, and deleted files, generates summaries for changes, and writes updated _TOC.json back to Drive.
 ---
 
 # /ci-refresh — Knowledge Base Sync
 
-Synchronize the Sharecon knowledge base table of contents (`_TOC.json`) with the contents of a shared Google Drive folder. This skill scans for new, modified, and deleted files, generates short summaries and topic tags for changes, and writes the updated TOC back to Drive.
+Synchronize the CI Knowledge knowledge base table of contents (`_TOC.json`) with the contents of a shared Google Drive folder. This skill scans for new, modified, and deleted files, generates short summaries and topic tags for changes, and writes the updated TOC back to Drive.
 
 ## Configuration
 
@@ -129,7 +129,7 @@ For **unchanged** files, keep their existing TOC entry as-is (preserve the previ
 2. Write the TOC JSON to a temporary file:
 
    ```bash
-   cat > /tmp/sharecon_toc.json << 'TOCEOF'
+   cat > /tmp/ci_knowledge_toc.json << 'TOCEOF'
    <pretty-printed JSON>
    TOCEOF
    ```
@@ -137,13 +137,13 @@ For **unchanged** files, keep their existing TOC entry as-is (preserve the previ
 3. Upload it to Drive:
 
    ```bash
-   python3 resources/drive_helpers.py write-toc "FOLDER_ID" /tmp/sharecon_toc.json
+   python3 resources/drive_helpers.py write-toc "FOLDER_ID" /tmp/ci_knowledge_toc.json
    ```
 
 4. Clean up the temp file:
 
    ```bash
-   rm -f /tmp/sharecon_toc.json
+   rm -f /tmp/ci_knowledge_toc.json
    ```
 
 ### Step 7 — Report results

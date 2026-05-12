@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Drive API helper for Sharecon TOC operations.
+Drive API helper for CI Knowledge TOC operations.
 
 Provides functions for listing files, reading content, and managing
 _TOC.json files in Google Drive folders. Used by Claude Code skills
@@ -83,7 +83,7 @@ def _multipart_upload(metadata: dict, content_bytes: bytes, content_type: str) -
     """
     from google_api_utils import get_access_token
 
-    boundary = "sharecon_boundary_2024"
+    boundary = "ci_knowledge_boundary_2024"
     body = (
         f"--{boundary}\r\n"
         f"Content-Type: application/json; charset=UTF-8\r\n\r\n"
@@ -290,7 +290,7 @@ def write_toc(folder_id: str, toc_data) -> dict:
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Google Drive helpers for Sharecon TOC operations.",
+        description="Google Drive helpers for CI Knowledge TOC operations.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 

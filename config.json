@@ -1,0 +1,4 @@
+{
+  "drive_folder_id": "REPLACE_WITH_YOUR_GOOGLE_DRIVE_FOLDER_ID",
+  "google_auth_path": "~/.claude/plugins/cache/fe-vibe/fe-google-tools/1.4.0/skills/google-auth/resources"
+}

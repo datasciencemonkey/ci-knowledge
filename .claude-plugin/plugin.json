@@ -6,7 +6,12 @@
     "name": "Sathish Gangichetty",
     "email": "datasciencemonkey@gmail.com"
   },
+  "homepage": "https://github.com/datasciencemonkey/ci-knowledge",
   "keywords": ["knowledge-base", "google-drive", "team-intelligence", "shared-consciousness"],
-  "skills": "./skills/",
-  "commands": "./commands/"
+  "skills": [
+    "skills/ci-ask",
+    "skills/ci-browse",
+    "skills/ci-expert",
+    "skills/ci-refresh"
+  ]
 }

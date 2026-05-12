@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"gh repo create datasciencemonkey/ci-knowledge --public --source=. --push --description \\\"Consumer Industries Knowledge Base — Claude Code plugin for surfacing team knowledge from Google Dr...",
+  "error": "Exit code 1\nGraphQL: Unauthorized: As an Enterprise Managed User, you cannot access this content (createRepository)",
+  "timestamp": "2026-05-12T11:10:19.439Z",
+  "retry_count": 1
+}
