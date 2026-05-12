@@ -11,10 +11,10 @@ The user's question is provided as **ARGUMENTS** to this skill.
 
 ## Configuration
 
-The Google Drive folder ID for the shared knowledge base:
+The Drive folder ID is read from `config.json` in the plugin root directory.
 
-```
-FOLDER_ID = "REPLACE_WITH_ACTUAL_FOLDER_ID"
+```bash
+FOLDER_ID=$(python3 -c "import json; print(json.load(open('config.json'))['drive_folder_id'])")
 ```
 
 All commands below use `resources/drive_helpers.py` relative to the plugin directory.

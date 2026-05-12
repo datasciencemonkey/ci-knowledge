@@ -18,9 +18,10 @@ If auth fails, tell the user:
 > Google Drive authentication is required. Run `/google-auth` first to authenticate.
 
 ### Configuration
-The knowledge base folder ID must be set. Use:
-```
-FOLDER_ID="REPLACE_WITH_ACTUAL_FOLDER_ID"
+The Drive folder ID is read from `config.json` in the plugin root directory.
+
+```bash
+FOLDER_ID=$(python3 -c "import json; print(json.load(open('config.json'))['drive_folder_id'])")
 ```
 
 ---
@@ -32,7 +33,7 @@ FOLDER_ID="REPLACE_WITH_ACTUAL_FOLDER_ID"
 Run the following command to load the table of contents:
 
 ```bash
-python3 resources/drive_helpers.py read-toc --folder-id "REPLACE_WITH_ACTUAL_FOLDER_ID"
+python3 resources/drive_helpers.py read-toc "$FOLDER_ID"
 ```
 
 Parse the JSON output. This gives you the `_TOC.json` contents including `last_synced`, `files`, and metadata.

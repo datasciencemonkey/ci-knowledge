@@ -13,10 +13,10 @@ Browse the Consumer Industries shared knowledge base stored in Google Drive. Lis
 Before running any commands, verify Google Drive authentication is available. The `resources/drive_helpers.py` script depends on the shared `google_api_utils` auth module. If auth fails, instruct the user to run `/google-auth` first.
 
 ### Configuration
-The target Google Drive folder ID must be set. Use the placeholder below until configured:
+The Drive folder ID is read from `config.json` in the plugin root directory.
 
-```
-FOLDER_ID="REPLACE_WITH_ACTUAL_FOLDER_ID"
+```bash
+FOLDER_ID=$(python3 -c "import json; print(json.load(open('config.json'))['drive_folder_id'])")
 ```
 
 ## Execution Steps
@@ -26,7 +26,7 @@ FOLDER_ID="REPLACE_WITH_ACTUAL_FOLDER_ID"
 Run the following command to fetch the current TOC from the shared Drive folder:
 
 ```bash
-python3 resources/drive_helpers.py read-toc --folder-id "REPLACE_WITH_ACTUAL_FOLDER_ID"
+python3 resources/drive_helpers.py read-toc "$FOLDER_ID"
 ```
 
 Parse the returned JSON into a structured list of documents with their metadata (title, folder, author, tags, modified date, summary).
@@ -133,5 +133,5 @@ Documents tagged "retail" ({n} total)
 ## Error Handling
 
 - If the TOC file is empty or missing, instruct the user to run `/ci-refresh` to populate the knowledge base.
-- If the folder ID is still set to `REPLACE_WITH_ACTUAL_FOLDER_ID`, inform the user to configure the actual folder ID in the plugin settings.
+- If `config.json` still has `REPLACE_WITH_YOUR_GOOGLE_DRIVE_FOLDER_ID`, inform the user to edit `config.json` and set their actual folder ID.
 - If authentication fails, direct the user to run `/google-auth`.

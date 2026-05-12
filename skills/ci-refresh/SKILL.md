@@ -9,10 +9,11 @@ Synchronize the CI Knowledge knowledge base table of contents (`_TOC.json`) with
 
 ## Configuration
 
-The Drive folder ID must be set before running this skill. Replace the placeholder below with the actual Google Drive folder ID for your team's knowledge base.
+The Drive folder ID is read from `config.json` in the plugin root directory. Before first use, edit `config.json` and set `drive_folder_id` to your team's Google Drive folder ID.
 
-```
-FOLDER_ID = "REPLACE_WITH_ACTUAL_FOLDER_ID"
+```bash
+# Read the folder ID from config
+FOLDER_ID=$(python3 -c "import json; print(json.load(open('config.json'))['drive_folder_id'])")
 ```
 
 ## Authentication
