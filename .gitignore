@@ -22,3 +22,4 @@ venv/
 
 # Local config with real folder ID — never commit
 config.json
+.omc/
