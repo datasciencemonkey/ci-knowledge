@@ -39,7 +39,7 @@ Select `fe-google-tools` from the interactive list and enable it.
 
 ```bash
 # Add the repo as a marketplace source
-claude plugin marketplace add github:datasciencemonkey/ci-knowledge
+claude plugin marketplace add datasciencemonkey/ci-knowledge
 
 # Install the plugin
 claude plugin install ci-knowledge
