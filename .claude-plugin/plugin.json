@@ -8,10 +8,5 @@
   },
   "homepage": "https://github.com/datasciencemonkey/ci-knowledge",
   "keywords": ["knowledge-base", "google-drive", "team-intelligence", "shared-consciousness"],
-  "skills": [
-    "skills/ci-ask",
-    "skills/ci-browse",
-    "skills/ci-expert",
-    "skills/ci-refresh"
-  ]
+  "skills": "./skills/"
 }
