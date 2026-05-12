@@ -31,16 +31,12 @@ If you don't have `fe-google-tools`, install it with vibe:
 ```bash
 vibe plugins
 ```
-Select `fe-google-tools` from the list and install it.
+Select `fe-google-tools` from the interactive list and enable it.
 
 ## Installation
 
 ### Step 1: Install the plugin
 
-```bash
-vibe plugins
-```
-Select `ci-knowledge` from the plugin list, or install directly:
 ```bash
 claude plugin add github:datasciencemonkey/ci-knowledge
 ```
