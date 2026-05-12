@@ -38,7 +38,11 @@ Select `fe-google-tools` from the interactive list and enable it.
 ### Step 1: Install the plugin
 
 ```bash
-claude plugin add github:datasciencemonkey/ci-knowledge
+# Add the repo as a marketplace source
+claude plugin marketplace add github:datasciencemonkey/ci-knowledge
+
+# Install the plugin
+claude plugin install ci-knowledge
 ```
 
 ### Step 2: Authenticate with Google Drive
