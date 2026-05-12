@@ -1,0 +1,30 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ci-knowledge",
+  "description": "Consumer Industries Knowledge Base — surface the CI team's collective knowledge from Google Drive via Claude Code",
+  "owner": {
+    "name": "Sathish Gangichetty",
+    "email": "datasciencemonkey@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "ci-knowledge",
+      "description": "Consumer Industries Knowledge Base — surface the CI team's collective knowledge from Google Drive via Claude Code. Query, browse, and find experts across the team's knowledge base.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sathish Gangichetty",
+        "email": "datasciencemonkey@gmail.com"
+      },
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://github.com/datasciencemonkey/ci-knowledge",
+      "tags": [
+        "knowledge-base",
+        "google-drive",
+        "team-intelligence",
+        "shared-consciousness"
+      ]
+    }
+  ],
+  "version": "0.1.0"
+}
