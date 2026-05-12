@@ -51,7 +51,13 @@ This opens a browser window. Sign in with your Databricks Google account and cli
 
 ### Step 3: Configure the Drive folder ID
 
-Edit `config.json` in the plugin directory. Set `drive_folder_id` to the shared Google Drive folder ID:
+Copy the example config and set your folder ID:
+
+```bash
+cp config.example.json config.json
+```
+
+Edit `config.json` and set `drive_folder_id` to the shared Google Drive folder ID:
 
 ```json
 {
@@ -59,6 +65,8 @@ Edit `config.json` in the plugin directory. Set `drive_folder_id` to the shared 
   "google_auth_path": "~/.claude/plugins/cache/fe-vibe/fe-google-tools/1.4.0/skills/google-auth/resources"
 }
 ```
+
+`config.json` is gitignored — your folder ID never gets pushed to the repo.
 
 #### How to find the Google Drive folder ID
 

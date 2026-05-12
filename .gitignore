@@ -19,3 +19,6 @@ venv/
 
 # Local config
 .env
+
+# Local config with real folder ID — never commit
+config.json
