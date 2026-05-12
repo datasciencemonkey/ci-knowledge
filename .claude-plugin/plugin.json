@@ -1,0 +1,12 @@
+{
+  "name": "sharecon",
+  "description": "Shared Consciousness — surface team collective knowledge from Google Drive via Claude Code. Query, browse, and find experts across your team's knowledge base.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sathish Gangichetty",
+    "email": "datasciencemonkey@gmail.com"
+  },
+  "keywords": ["knowledge-base", "google-drive", "team-intelligence", "shared-consciousness"],
+  "skills": "./skills/",
+  "commands": "./commands/"
+}
